@@ -1,7 +1,5 @@
-/* API Key — replace this with your actual OpenAI API key */
-const apiKey = "YOUR_OPENAI_API_KEY_HERE";
-
 /* System prompt — defines the chatbot's role and scope */
+// Note: the API key is stored securely in Cloudflare — never put it here
 const systemPrompt =
   "You are a helpful L'Oréal beauty assistant. You only answer questions related to L'Oréal products, skincare and haircare routines, and personalized beauty recommendations. If a user asks about anything unrelated to L'Oréal or beauty, politely let them know you can only assist with L'Oréal-related topics.";
 
@@ -42,15 +40,15 @@ chatForm.addEventListener("submit", async (e) => {
   addMessage("assistant", "Thinking…");
 
   try {
-    // 4. Send the request to OpenAI's Chat Completions API
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    // 4. Send the request to our Cloudflare Worker, which securely forwards
+    //    it to OpenAI using the API key stored as a Cloudflare secret.
+    const response = await fetch("/api/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "gpt-4o",
+        // Only the messages array is sent — the Worker adds the model & key
         messages: [
           // System prompt sets the assistant's behavior
           { role: "system", content: systemPrompt },

@@ -1,0 +1,9 @@
+name = "loreal-chatbot"
+main = "src/index.js"
+compatibility_date = "2026-04-13"
+
+# Serve the static files (index.html, style.css, script.js, img/) from
+# the project root. Cloudflare will handle caching and delivery.
+[assets]
+directory = "."
+binding = "ASSETS"
